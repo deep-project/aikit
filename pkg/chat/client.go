@@ -48,7 +48,7 @@ func (c *Client) SetMaxSteps(n int) *Client {
 	return c
 }
 
-func (c *Client) Send(req *Request) (*Result, error) {
+func (c *Client) Send(req *Request) (*SendResult, error) {
 
 	if c.Provider == nil {
 		return nil, errors.New("provider is not defined")
@@ -71,7 +71,7 @@ func (c *Client) Send(req *Request) (*Result, error) {
 		step++
 
 		// 1. 调用模型
-		resp, err := c.BaseRequest(&Request{
+		resp, err := c.Request(&Request{
 			Messages: messages,
 			Tools:    req.Tools,
 		})
@@ -94,7 +94,7 @@ func (c *Client) Send(req *Request) (*Result, error) {
 
 		// 3. 判断是否有 tool_calls
 		if len(msg.ToolCalls) == 0 {
-			return &Result{
+			return &SendResult{
 				Output:   &msg,
 				Messages: messages,
 				Response: resp,
@@ -136,7 +136,7 @@ func (c *Client) findTool(tools []Tool, name string) Tool {
 	return nil
 }
 
-func (c *Client) BaseRequest(req *Request) (*Response, error) {
+func (c *Client) Request(req *Request) (*Response, error) {
 	if c.Provider == nil {
 		return nil, errors.New("provider is not defined")
 	}

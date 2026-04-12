@@ -20,12 +20,20 @@ func buildTool(tool chat.Tool) Tool {
 			Description: info.Description,
 			Parameters: ToolParameters{
 				Type:                 "object",
-				Required:             info.Required,
+				Required:             toToolRequired(info.Parameters),
 				AdditionalProperties: false,
 				Properties:           toToolProperties(info.Parameters),
 			},
 		},
 	}
+}
+func toToolRequired(parameters []chat.ToolParameter) (res []string) {
+	for _, p := range parameters {
+		if p.Required {
+			res = append(res, p.Name)
+		}
+	}
+	return
 }
 
 func toToolProperties(parameters []chat.ToolParameter) map[string]ToolProperty {

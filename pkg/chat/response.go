@@ -1,6 +1,6 @@
 package chat
 
-type Result struct {
+type SendResult struct {
 	Output   *ResponseMessage `json:"output"`   // 最佳答案（直接选Choices第一个）
 	Messages []RequestMessage `json:"messages"` // 完整消息列表(包含tool msg和AI最后输出的msg)
 	Response *Response        `json:"response"` // 核心响应

@@ -13,7 +13,34 @@ func TestChat(t *testing.T) {
 	p := openai.NewChat(env.BaseURL, env.APIKey, env.Model, false)
 	c := chat.New(chat.WithProvider(p))
 	r, err := c.Send(&chat.Request{
-		Tools: []chat.Tool{tools.NewChatGetStock()},
+		Messages: []chat.RequestMessage{
+			{
+				Role: chat.RoleUser,
+				Content: []chat.Content{
+					{Type: chat.ContentTypeText, Text: "你好, AI!"},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	b, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(string(b))
+}
+
+func TestChatTools(t *testing.T) {
+	p := openai.NewChat(env.BaseURL, env.APIKey, env.Model, false)
+	c := chat.New(chat.WithProvider(p))
+	r, err := c.Send(&chat.Request{
+		Tools: []chat.Tool{
+			tools.NewChatGetStock(), // 查询库存的tool
+		},
 		Messages: []chat.RequestMessage{
 			{
 				Role: chat.RoleUser,
@@ -35,11 +62,10 @@ func TestChat(t *testing.T) {
 	t.Log(string(b))
 }
 
-func TestChatBaseRequest(t *testing.T) {
+func TestChatRequest(t *testing.T) {
 	p := openai.NewChat(env.BaseURL, env.APIKey, env.Model, false)
 	c := chat.New(chat.WithProvider(p))
-	r, err := c.BaseRequest(&chat.Request{
-		Tools: []chat.Tool{tools.NewChatGetStock()},
+	r, err := c.Request(&chat.Request{
 		Messages: []chat.RequestMessage{
 			{
 				Role: chat.RoleUser,

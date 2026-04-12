@@ -1,6 +1,10 @@
 package tools
 
-import "github.com/deep-project/aikit/pkg/chat"
+import (
+	"fmt"
+
+	"github.com/deep-project/aikit/pkg/chat"
+)
 
 type ChatGetStock struct {
 }
@@ -24,5 +28,10 @@ func (ChatGetStock) Info() *chat.ToolInfo {
 }
 
 func (ChatGetStock) Call(args map[string]any) (string, error) {
+	code, ok := args["code"]
+	if !ok {
+		return "", fmt.Errorf("missing param: code")
+	}
+	fmt.Println("code", code)
 	return "当前商品的库存是：666", nil
 }
