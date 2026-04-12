@@ -1,10 +1,4 @@
-# Chat
-
-> 基本的消息交互 
-> 
-> 内部处理tool call loop
-
-
+# Chat包
 
 ## 基本使用
 ```go
