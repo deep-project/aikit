@@ -92,13 +92,15 @@ func (c *Client) Send(req *Request) (*SendResult, error) {
 			ToolCalls: msg.ToolCalls,
 		})
 
+		sendRes := &SendResult{
+			Output:   &msg,
+			Messages: messages,
+			Response: resp,
+		}
+
 		// 3. 判断是否有 tool_calls
 		if len(msg.ToolCalls) == 0 {
-			return &SendResult{
-				Output:   &msg,
-				Messages: messages,
-				Response: resp,
-			}, nil
+			return sendRes, nil
 		}
 
 		// 4. 执行 tools
@@ -109,9 +111,12 @@ func (c *Client) Send(req *Request) (*SendResult, error) {
 				return nil, errors.New("tool not found: " + tc.Name)
 			}
 
-			result, err := tool.Call(ToolCallInput{Request: req, Response: tc})
+			result, stop, err := tool.Call(ToolCallInput{Request: req, Response: tc})
 			if err != nil {
 				return nil, err
+			}
+			if stop {
+				return sendRes, nil
 			}
 
 			// 5. 加入 tool message

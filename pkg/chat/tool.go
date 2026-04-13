@@ -2,7 +2,7 @@ package chat
 
 type Tool interface {
 	Info() *ToolInfo
-	Call(ToolCallInput) (string, error)
+	Call(ToolCallInput) (_ string, stop bool, _ error)
 }
 
 type ToolCallInput struct {

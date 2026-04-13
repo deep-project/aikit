@@ -27,11 +27,11 @@ func (ChatGetStock) Info() *chat.ToolInfo {
 	}
 }
 
-func (ChatGetStock) Call(input chat.ToolCallInput) (string, error) {
+func (ChatGetStock) Call(input chat.ToolCallInput) (_ string, stop bool, _ error) {
 	code, ok := input.Response.Arguments["code"]
 	if !ok {
-		return "", fmt.Errorf("missing param: code")
+		return "", false, fmt.Errorf("missing param: code")
 	}
 	fmt.Println("code", code)
-	return "当前商品的库存是：666", nil
+	return "当前商品的库存是：666", false, nil
 }
