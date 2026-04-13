@@ -47,7 +47,6 @@ func (c *Chat) Chat(req *chat.Request) (*chat.Response, error) {
 		Post(c.getFullURL())
 
 	if err != nil {
-		fmt.Println("err", err)
 		return nil, err
 	}
 
