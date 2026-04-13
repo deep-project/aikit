@@ -9,6 +9,13 @@ type SendResult struct {
 type Response struct {
 	ID      string           `json:"id"`
 	Choices []ResponseChoice `json:"choices"` // 响应回答（一般单条，多条时有备选答案）
+	Usage   ResponseUsage    `json:"usage"`
+}
+
+type ResponseUsage struct {
+	InputTokens  float64 `json:"input_tokens"`
+	OutputTokens float64 `json:"output_tokens"`
+	TotalTokens  float64 `json:"total_tokens"`
 }
 
 type ResponseChoice struct {

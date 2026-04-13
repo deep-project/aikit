@@ -17,6 +17,13 @@ type Response struct {
 	Created int              `json:"created"` // 创建的时间戳
 	Model   string           `json:"model"`   // 模型名称
 	Choices []ResponseChoice `json:"choices"`
+	Usage   ResponseUsage    `json:"usage"`
+}
+
+type ResponseUsage struct {
+	PromptTokens     float64 `json:"prompt_tokens"`     // 输入token用量
+	CompletionTokens float64 `json:"completion_tokens"` // 输出token用量
+	TotalTokens      float64 `json:"total_tokens"`      // 总用量
 }
 
 type ResponseChoice struct {
@@ -47,6 +54,11 @@ func toChatResponse(resp *Response) *chat.Response {
 	return &chat.Response{
 		ID:      resp.ID,
 		Choices: toChatResponseChoices(resp.Choices),
+		Usage: chat.ResponseUsage{
+			InputTokens:  resp.Usage.PromptTokens,
+			OutputTokens: resp.Usage.CompletionTokens,
+			TotalTokens:  resp.Usage.TotalTokens,
+		},
 	}
 }
 
