@@ -2,7 +2,12 @@ package chat
 
 type Tool interface {
 	Info() *ToolInfo
-	Call(args map[string]any) (string, error)
+	Call(ToolCallInput) (string, error)
+}
+
+type ToolCallInput struct {
+	Request  *Request
+	Response ResponseToolCall
 }
 
 type ToolInfo struct {

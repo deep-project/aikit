@@ -1,8 +1,12 @@
 package chat
 
+import "context"
+
 type Request struct {
 	Messages []RequestMessage `json:"messages"`
 	Tools    []Tool           `json:"tools,omitzero"`
+	Meta     map[string]any   `json:"meta,omitzero"`
+	Ctx      context.Context  `json:"-"`
 }
 
 type RequestMessage struct {

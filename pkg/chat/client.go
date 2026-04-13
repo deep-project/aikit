@@ -109,7 +109,7 @@ func (c *Client) Send(req *Request) (*SendResult, error) {
 				return nil, errors.New("tool not found: " + tc.Name)
 			}
 
-			result, err := tool.Call(tc.Arguments)
+			result, err := tool.Call(ToolCallInput{Request: req, Response: tc})
 			if err != nil {
 				return nil, err
 			}

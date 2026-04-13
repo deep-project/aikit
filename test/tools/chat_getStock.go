@@ -27,8 +27,8 @@ func (ChatGetStock) Info() *chat.ToolInfo {
 	}
 }
 
-func (ChatGetStock) Call(args map[string]any) (string, error) {
-	code, ok := args["code"]
+func (ChatGetStock) Call(input chat.ToolCallInput) (string, error) {
+	code, ok := input.Response.Arguments["code"]
 	if !ok {
 		return "", fmt.Errorf("missing param: code")
 	}
