@@ -12,13 +12,29 @@ type Request struct {
 	Messages   []RequestMessage `json:"messages"`
 	Tools      []Tool           `json:"tools,omitempty"`
 	ToolChoice any              `json:"tool_choice,omitempty"`
+	// 随机性
+	// 0:最保守 1:有创造性 1.2:非常随机(可能胡说)
+	Temperature float64 `json:"temperature,omitempty"`
+	// 核采样
+	// 0.5:很保守 0.9:只选高概率词 1.0:不限制（最随机）
+	TopP float64 `json:"top_p,omitempty"`
+	// 存在惩罚
+	// 0:多说已存在的词 1:多用新词
+	PresencePenalty float64 `json:"presence_penalty,omitempty"`
+	// 频率惩罚
+	// 0:重复性加强 1:重复性减弱
+	FrequencyPenalty float64 `json:"frequency_penalty,omitempty"`
 }
 
 func buildRequest(model string, req *chat.Request, multimodal bool) *Request {
 	return &Request{
-		Model:    model,
-		Messages: toRequestMessages(req.Messages, multimodal),
-		Tools:    toRequestTools(req.Tools),
+		Model:            model,
+		Messages:         toRequestMessages(req.Messages, multimodal),
+		Tools:            toRequestTools(req.Tools),
+		Temperature:      req.Temperature,
+		TopP:             req.TopP,
+		PresencePenalty:  req.PresencePenalty,
+		FrequencyPenalty: req.FrequencyPenalty,
 	}
 }
 
