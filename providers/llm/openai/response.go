@@ -21,9 +21,9 @@ type Response struct {
 }
 
 type ResponseUsage struct {
-	PromptTokens     float64 `json:"prompt_tokens"`     // 输入token用量
-	CompletionTokens float64 `json:"completion_tokens"` // 输出token用量
-	TotalTokens      float64 `json:"total_tokens"`      // 总用量
+	PromptTokens     int `json:"prompt_tokens"`     // 输入token用量
+	CompletionTokens int `json:"completion_tokens"` // 输出token用量
+	TotalTokens      int `json:"total_tokens"`      // 总用量
 }
 
 type ResponseChoice struct {

@@ -13,9 +13,9 @@ type Response struct {
 }
 
 type ResponseUsage struct {
-	InputTokens  float64 `json:"input_tokens"`
-	OutputTokens float64 `json:"output_tokens"`
-	TotalTokens  float64 `json:"total_tokens"`
+	InputTokens  int `json:"input_tokens"`
+	OutputTokens int `json:"output_tokens"`
+	TotalTokens  int `json:"total_tokens"`
 }
 
 type ResponseChoice struct {
