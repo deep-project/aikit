@@ -24,6 +24,9 @@ type Request struct {
 	// 频率惩罚
 	// 0.001:重复性加强 1:重复性减弱
 	FrequencyPenalty float64 `json:"frequency_penalty,omitempty"`
+
+	// 千问适配
+	ExtraBody *RequestExtraBody `json:"extra_body,omitempty"`
 }
 
 func buildRequest(model string, req *chat.Request, multimodal bool) *Request {
@@ -35,6 +38,7 @@ func buildRequest(model string, req *chat.Request, multimodal bool) *Request {
 		TopP:             req.TopP,
 		PresencePenalty:  req.PresencePenalty,
 		FrequencyPenalty: req.FrequencyPenalty,
+		ExtraBody:        &RequestExtraBody{EnableThinking: req.EnableThinking},
 	}
 }
 
@@ -82,4 +86,8 @@ func toRequestToolCalls(toolCalls []chat.ResponseToolCall) (res []ToolCall) {
 		res = append(res, buildToolCall(t))
 	}
 	return
+}
+
+type RequestExtraBody struct {
+	EnableThinking bool `json:"enable_thinking"`
 }

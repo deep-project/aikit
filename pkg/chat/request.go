@@ -34,6 +34,9 @@ type Request struct {
 	// 频率惩罚
 	// 0.001:重复性加强 1:重复性减弱
 	FrequencyPenalty float64 `json:"frequency_penalty,omitempty"`
+
+	// 启用深度思考
+	EnableThinking bool `json:"enable_thinking"`
 }
 
 type RequestMessage struct {
