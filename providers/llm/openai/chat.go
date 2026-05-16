@@ -3,7 +3,10 @@ package openai
 import (
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/deep-project/aikit/pkg/chat"
 	"github.com/go-resty/resty/v2"
@@ -39,7 +42,18 @@ func (c *Chat) Chat(req *chat.Request) (*chat.Response, error) {
 	var chatResp Response
 	var chatReq = buildRequest(c.Model, req, c.Multimodal)
 
-	r, err := resty.New().R().
+	client := resty.New().
+		SetTimeout(90 * time.Second).
+		SetRetryCount(2).
+		SetTransport(&http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout: 10 * time.Second,
+			}).DialContext,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ResponseHeaderTimeout: 10 * time.Second,
+		})
+
+	r, err := client.R().
 		SetHeader("Authorization", c.getAuthorization()).
 		SetHeader("Content-Type", "application/json").
 		SetBody(chatReq).
