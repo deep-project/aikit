@@ -18,6 +18,9 @@ type Chat struct {
 	APIKey  string
 	Model   string
 
+	Timeout    time.Duration // 超时时间
+	RetryCount int           // 重试次数
+
 	// 多模态
 	// content是多条
 	Multimodal bool
@@ -42,9 +45,13 @@ func (c *Chat) Chat(req *chat.Request) (*chat.Response, error) {
 	var chatResp Response
 	var chatReq = buildRequest(c.Model, req, c.Multimodal)
 
+	if c.Timeout == 0 {
+		c.Timeout = 90 * time.Second
+	}
+
 	client := resty.New().
-		SetTimeout(90 * time.Second).
-		SetRetryCount(2).
+		SetTimeout(c.Timeout).
+		SetRetryCount(c.RetryCount).
 		SetTransport(&http.Transport{
 			DialContext: (&net.Dialer{
 				Timeout: 10 * time.Second,
